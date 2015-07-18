@@ -1,0 +1,20 @@
+name: 'chrome-extension-saml-decoder'
+version: 0.0.1
+description: 'chrome-extension-saml-decoder'
+#author: Your Name <email@example.com>
+#homepage: https://www.example.com
+
+environment:
+  sdk: '>=1.0.0 <2.0.0'
+
+dependencies:
+  browser: '>=0.10.0 <0.11.0'
+  dart_to_js_script_rewriter: '^0.1.0'
+  dispatch: "^0.1.2"
+  react: "^0.7.1"
+  xml: "^2.3.2"
+  chrome: "^0.7.0-dev1"
+  archive: "^1.0.20"
+
+transformers:
+- dart_to_js_script_rewriter

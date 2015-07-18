@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+
+  "name": "chrome-extension-saml-decoder",
+  "description": "chrome-extension-saml-decoder",
+  "version": "1.0",
+
+  "browser_action": {
+    "default_icon": "web/images/icon.png",
+    "default_popup": "web/index.html"
+  },
+
+  "permissions": [
+    "<all_urls>","webRequest","webRequestBlocking"
+  ],
+
+  "background": {
+    "page": "web/background/background.html"
+  }
+}
