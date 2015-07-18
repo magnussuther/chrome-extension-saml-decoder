@@ -27,6 +27,7 @@ fi
 if [ ! -f /home/vagrant/dartium-linux-x64-release.zip ]; then
   wget https://storage.googleapis.com/dart-archive/channels/stable/release/latest/dartium/dartium-linux-x64-release.zip
   unzip dartium-linux-x64-release.zip
+  chown -R vagrant:vagrant dartium-lucid64-full-stable-1.11.1.0
 fi
 
 if [ ! -f /lib/x86_64-linux-gnu/libudev.so.0 ]; then
