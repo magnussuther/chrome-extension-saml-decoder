@@ -29,7 +29,7 @@ class MessageStore {
   }
 
   addAllMessagesFromAction(AddAllMessagesAction action) {
-    List<SamlMessage> list = action.messages.map((Map m) => new SamlMessage(m["time"], m["parameter"], m["content"]));
+    List<SamlMessage> list = action.messages.map((Map m) => new SamlMessage.fromJson(m));
     list = list.map((SamlMessage m) => _prettifyMessage(m));
 
     messages.addAll(list);

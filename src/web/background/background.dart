@@ -71,7 +71,7 @@ void processGETMessage(Map data) {
 
     var base64Decoded = window.atob(request);
 
-    // TODO: We should find us a pub package instead of calling JS. 
+    // TODO: We should find us a pub package instead of calling JS.
     JsObject pakoInflate = context["pako"];
     var inflatedBytes = pakoInflate.callMethod("inflateRaw", [base64Decoded]);
     var inflated = UTF8.decode(inflatedBytes);
