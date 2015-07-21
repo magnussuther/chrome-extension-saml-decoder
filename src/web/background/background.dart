@@ -3,6 +3,7 @@ library background;
 import 'dart:js';
 import 'dart:convert';
 import 'dart:html';
+import '../saml_message.dart';
 
 void main() {
   print("background starting");
@@ -30,11 +31,7 @@ onBeforeRequestHandler(Map data) {
 storeInLocalStorage(String decoded, String parameter) {
   List<Map> storedMessages = JSON.decode(window.localStorage["messages"]);
 
-  Map newMessage = {
-    "time": new DateTime.now().toUtc().toString(),
-    "parameter": parameter,
-    "content": '''$decoded'''
-  };
+  Map newMessage = new SamlMessage(new DateTime.now().toUtc().toString(), parameter, '''$decoded''').toJson();
 
   storedMessages.add(newMessage);
 

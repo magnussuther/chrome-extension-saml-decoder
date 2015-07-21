@@ -12,4 +12,12 @@ class SamlMessage {
     parameter = json["parameter"];
     content = json["content"];
   }
+
+  Map toJson() {
+    return {
+      "time": time,
+      "parameter": parameter,
+      "content": content
+    };
+  }
 }
