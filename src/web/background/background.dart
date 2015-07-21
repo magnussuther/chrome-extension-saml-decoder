@@ -27,7 +27,7 @@ onBeforeRequestHandler(Map data) {
   }
 }
 
-StoreInLocalStorage(String decoded, String parameter) {
+storeInLocalStorage(String decoded, String parameter) {
   List<Map> storedMessages = JSON.decode(window.localStorage["messages"]);
 
   Map newMessage = {
@@ -56,7 +56,7 @@ void processPOSTMessage(Map data) {
         var decoded = window.atob(response);
         print("DECODED RESPONSE: $decoded");
 
-        StoreInLocalStorage(decoded, "SAMLResponse");
+        storeInLocalStorage(decoded, "SAMLResponse");
       }
     }
   }
@@ -67,36 +67,15 @@ void processGETMessage(Map data) {
   Uri uri = Uri.parse(url);
   if (uri.hasQuery && uri.queryParameters.containsKey("SAMLRequest")) {
     var request = uri.queryParameters["SAMLRequest"];
-    print("REQUEST: $request");
-    // Its URL decoded already
+    // The request is URL decoded already
 
-    // Base64-decode
-    var decoded = window.atob(request);
-    print("DECODED: $decoded");
+    var base64Decoded = window.atob(request);
 
-    // Inflate
+    // TODO: We should find us a pub package instead of calling JS. 
+    JsObject pakoInflate = context["pako"];
+    var inflatedBytes = pakoInflate.callMethod("inflateRaw", [base64Decoded]);
+    var inflated = UTF8.decode(inflatedBytes);
 
-//    List<int> bytes = UTF8.encode(decoded);
-//    print("BYTES:");
-//    print(bytes);
-//    GZipDecoder d = new GZipDecoder();
-//    List<int> inflated = d.decodeBytes(bytes);
-//
-//    print("DEFLATED: $inflated");
+    storeInLocalStorage(inflated, "SAMLRequest");
   }
-}
-
-onNavigatedHandler(e) {
-  print("Got data!");
-  print(e);
-}
-
-onRequestHandler(e) {
-  print("Got data!");
-  print(e);
-}
-
-onCompletedHandler(data) {
-  print("Got data!");
-  print(data);
 }

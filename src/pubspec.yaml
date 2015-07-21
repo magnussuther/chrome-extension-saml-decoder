@@ -14,7 +14,6 @@ dependencies:
   react: "^0.7.1"
   xml: "^2.3.2"
   chrome: "^0.7.0-dev1"
-  archive: "^1.0.20"
   bootstrap: "^3.3.4"
   pub_jquery:
     git: "git://github.com/magnussuther/pub_jquery_2.1.4"
