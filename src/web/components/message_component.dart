@@ -15,7 +15,7 @@ class MessageComponent extends Component {
     return (
       div({"className": "panel panel-default samlmessage"},[
         div({"className": "panel-heading", "key": "panel-heading-${itemIndex}"},
-        "# ${itemIndex} - ${message.parameter} at ${message.time}"
+        "# ${itemIndex} - ${message.parameter} via ${message.binding} binding, at ${message.time} (UTC)"
         ),
         div({"className": "panel-body", "key": "panel-body-${itemIndex}"},
           pre({},

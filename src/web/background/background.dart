@@ -30,10 +30,10 @@ onBeforeRequestHandler(Map data) {
   }
 }
 
-storeInLocalStorage(String decoded, String parameter) {
+storeInLocalStorage(String decoded, String parameter, String binding) {
   List<Map> storedMessages = JSON.decode(window.localStorage["messages"]);
 
-  Map newMessage = new SamlMessage(new DateTime.now().toUtc().toString(), parameter, '''$decoded''').toJson();
+  Map newMessage = new SamlMessage(new DateTime.now().toUtc().toString(), parameter, '''$decoded''', binding).toJson();
 
   storedMessages.add(newMessage);
 
@@ -60,7 +60,7 @@ void processSamlPostBindingMessage(Map data) {
 
       String message = messages[0];
       var decoded = window.atob(message);
-      storeInLocalStorage(decoded, parameter);
+      storeInLocalStorage(decoded, parameter, "post");
     }
   }
 }
@@ -95,6 +95,6 @@ void processSamlRedirectBindingMessage(Map data) {
     var inflatedBytes = pakoInflate.callMethod("inflateRaw", [base64Decoded]);
     var inflated = UTF8.decode(inflatedBytes);
 
-    storeInLocalStorage(inflated, queryKey);
+    storeInLocalStorage(inflated, queryKey, "redirect");
   }
 }
