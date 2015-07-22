@@ -1,4 +1,4 @@
-library saml_message;
+part of magnussuther.chrome_extension_saml_decoder;
 
 class SamlMessage {
   String time;

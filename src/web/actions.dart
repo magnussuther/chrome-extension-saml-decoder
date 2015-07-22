@@ -1,6 +1,4 @@
-library actions;
-
-import 'saml_message.dart';
+part of magnussuther.chrome_extension_saml_decoder;
 
 class AddMessageAction {
   static String key = "ADD_MESSAGE";

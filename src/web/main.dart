@@ -1,13 +1,4 @@
-import 'dart:html';
-import 'dart:convert';
-
-import 'package:dispatch/dispatch.dart';
-import 'package:react/react_client.dart' as reactClient;
-import 'package:react/react.dart';
-
-import 'stores/message_store.dart';
-import 'components/app_component.dart';
-import 'actions.dart';
+part of magnussuther.chrome_extension_saml_decoder;
 
 var actionDispatcher;
 MessageStore messageStore;

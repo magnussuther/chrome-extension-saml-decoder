@@ -1,9 +1,4 @@
-library message_list_component;
-
-import 'package:react/react.dart';
-import '../main.dart';
-import '../saml_message.dart';
-import 'message_component.dart';
+part of magnussuther.chrome_extension_saml_decoder;
 
 class MessageListComponent extends Component {
   getInitialState() => {

@@ -1,9 +1,9 @@
-library background;
+library magnussuther.chrome_extension_saml_decoder.background;
 
-import 'dart:js';
-import 'dart:convert';
 import 'dart:html';
-import '../saml_message.dart';
+import 'dart:convert';
+import 'dart:js';
+import '../chrome_extension_saml_decoder.dart';
 
 void main() {
   print("background starting");

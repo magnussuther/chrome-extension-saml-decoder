@@ -1,6 +1,4 @@
-library footer_component;
-
-import 'package:react/react.dart';
+part of magnussuther.chrome_extension_saml_decoder;
 
 class FooterComponent extends Component {
 

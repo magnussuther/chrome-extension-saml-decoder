@@ -1,11 +1,4 @@
-library message_store;
-
-import 'package:dispatch/dispatch.dart';
-import 'package:xml/xml.dart';
-
-import '../main.dart';
-import '../saml_message.dart';
-import '../actions.dart';
+part of magnussuther.chrome_extension_saml_decoder;
 
 class MessageStore {
   var _dispatcher;

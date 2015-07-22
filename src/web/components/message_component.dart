@@ -1,8 +1,4 @@
-library message_component;
-
-import 'dart:js';
-import 'package:react/react.dart';
-import '../saml_message.dart';
+part of magnussuther.chrome_extension_saml_decoder;
 
 class MessageComponent extends Component {
   componentDidMount(root) => highlight();
