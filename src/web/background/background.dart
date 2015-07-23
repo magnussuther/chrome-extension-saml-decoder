@@ -41,9 +41,9 @@ storeInLocalStorage(String decoded, String parameter, String binding) {
 }
 
 void processSamlPostBindingMessage(JsObject data) {
-  Map body = data["requestBody"];
+  var body = data["requestBody"];
   if (body != null) {
-    Map formData = body["formData"];
+    var formData = body["formData"];
 
     if (formData != null) {
 
@@ -65,7 +65,7 @@ void processSamlPostBindingMessage(JsObject data) {
   }
 }
 
-postParameterExists(Map formData, String parameter) {
+postParameterExists(formData, parameter) {
   var messageList = formData[parameter];
   return messageList != null && messageList.length > 0;
 }
