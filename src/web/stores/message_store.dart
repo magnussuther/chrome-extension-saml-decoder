@@ -9,11 +9,8 @@ class MessageStore {
     _dispatcher = Dispatch.create();
 
     // This store reacts to these types of actions only
-    actionDispatcher.watch(AddMessageAction.key)
-      .listen((action) => addMessageFromAction(action["data"]));
-
-    actionDispatcher.watch(AddAllMessagesAction.key)
-      .listen((action) => addAllMessagesFromAction(action["data"]));
+    actions.on(ActionType.addSamlMessage, (action) => _addMessageFromAction(action));
+    actions.on(ActionType.addAllSamlMessages, (action) => _addAllMessagesFromAction(action));
   }
 
   SamlMessage _prettifyMessage(SamlMessage message) {
@@ -21,9 +18,8 @@ class MessageStore {
     return message;
   }
 
-  addAllMessagesFromAction(AddAllMessagesAction action) {
-    List<SamlMessage> list = action.messages.map((Map m) => new SamlMessage.fromJson(m));
-    list = list.map((SamlMessage m) => _prettifyMessage(m));
+  _addAllMessagesFromAction(action) {
+    var list = action["data"].map((m) => _prettifyMessage(m));
 
     messages.addAll(list);
 
@@ -34,11 +30,9 @@ class MessageStore {
     _dispatcher.dispatch({});
   }
 
-  addMessageFromAction(AddMessageAction action) {
-    var message = action.message;
-
+  _addMessageFromAction(action) {
     // Fix the indentation of the message before adding it
-    message = _prettifyMessage(message);
+    var message = _prettifyMessage(action["data"]);
     messages.add(message);
 
     // Sort the messages by time of arrival, ascending
