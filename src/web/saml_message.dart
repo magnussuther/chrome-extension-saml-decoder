@@ -23,4 +23,8 @@ class SamlMessage {
       "binding": binding
     };
   }
+
+  int compareByTimestamp(SamlMessage other) {
+    return DateTime.parse(time).compareTo(DateTime.parse(other.time));
+  }
 }

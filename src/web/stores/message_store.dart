@@ -24,7 +24,7 @@ class MessageStore {
     messages.addAll(list);
 
     // Sort the messages by time of arrival, ascending
-    messages.sort((SamlMessage a, SamlMessage b) => compareMessageTimestamps(a, b));
+    messages.sort((a, b) => -a.compareByTimestamp(b));
 
     // Notify all listening Components that this store has changed
     _dispatcher.dispatch({});
@@ -36,16 +36,10 @@ class MessageStore {
     messages.add(message);
 
     // Sort the messages by time of arrival, ascending
-    messages.sort((SamlMessage a, SamlMessage b) => compareMessageTimestamps(a, b));
+    messages.sort((a, b) => -a.compareByTimestamp(b));
 
     // Notify all listening Components that this store has changed
     _dispatcher.dispatch({});
-  }
-
-  int compareMessageTimestamps(SamlMessage a, SamlMessage b) {
-    DateTime aTime = DateTime.parse(a.time);
-    DateTime bTime = DateTime.parse(b.time);
-    return bTime.compareTo(aTime);
   }
 
   Dispatch getDispatcher() {
