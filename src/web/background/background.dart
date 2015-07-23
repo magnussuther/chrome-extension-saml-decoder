@@ -18,7 +18,7 @@ void main() {
   f.apply(null);
 }
 
-onBeforeRequestHandler(Map data) {
+onBeforeRequestHandler(JsObject data) {
   if (data["method"] == "GET") {
     processSamlRedirectBindingMessage(data);
   }
@@ -40,7 +40,7 @@ storeInLocalStorage(String decoded, String parameter, String binding) {
   window.localStorage["messages"] = JSON.encode(storedMessages);
 }
 
-void processSamlPostBindingMessage(Map data) {
+void processSamlPostBindingMessage(JsObject data) {
   Map body = data["requestBody"];
   if (body != null) {
     Map formData = body["formData"];
@@ -70,7 +70,7 @@ postParameterExists(Map formData, String parameter) {
   return messageList != null && messageList.length > 0;
 }
 
-void processSamlRedirectBindingMessage(Map data) {
+void processSamlRedirectBindingMessage(JsObject data) {
   var url = data["url"];
   Uri uri = Uri.parse(url);
 
