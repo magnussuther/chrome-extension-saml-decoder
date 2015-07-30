@@ -3,7 +3,7 @@ library magnussuther.chrome_extension_saml_decoder.background;
 import 'dart:html';
 import 'dart:convert';
 import 'dart:js';
-import '../chrome_extension_saml_decoder.dart';
+import '../main.dart';
 
 void main() {
   // Reset the current state of the localStorage each time the extension starts.

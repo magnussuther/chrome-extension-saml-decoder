@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 import 'package:react/react_client.dart' as reactClient;
 import 'package:react/react_test_utils.dart' as reactTestUtils;
 
-import '../web/chrome_extension_saml_decoder.dart' as app;
+import '../web/main.dart' as app;
 
 
 void main() {
