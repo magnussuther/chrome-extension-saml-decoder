@@ -34,4 +34,8 @@ if [ ! -f /lib/x86_64-linux-gnu/libudev.so.0 ]; then
   sudo ln -sf /lib/x86_64-linux-gnu/libudev.so.1 /lib/x86_64-linux-gnu/libudev.so.0
 fi
 
+if [ ! -f /usr/local/bin/dartium ]; then
+  sudo ln -s /home/vagrant/dartium-lucid64-full-stable-1.11.1.0/chrome /usr/local/bin/dartium 
+fi
+
 apt-get install git -y
