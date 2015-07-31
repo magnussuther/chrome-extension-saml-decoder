@@ -3,11 +3,16 @@
 
   "name": "chrome-extension-saml-decoder",
   "description": "chrome-extension-saml-decoder",
-  "version": "1.0",
+  "version": "0.0.1",
 
   "browser_action": {
-    "default_icon": "web/images/icon.png",
     "default_popup": "web/index.html"
+  },
+
+  "icons": {
+    "16": "icon_16.png",
+    "48": "icon_48.png",
+    "128": "icon_128.png"
   },
 
   "permissions": [
