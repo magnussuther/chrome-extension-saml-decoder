@@ -3,7 +3,8 @@ part of magnussuther.chrome_extension_saml_decoder;
 
 enum ActionType {
   addSamlMessage,
-  addAllSamlMessages
+  addAllSamlMessages,
+  clearAllSamlMessages
 }
 
 class Actions {
@@ -29,6 +30,14 @@ class Actions {
     _dispatcher.dispatch({
       "message": ActionType.addAllSamlMessages.toString(),
       "data": messages
+    });
+  }
+
+  clearAllSamlMessages() {
+    window.localStorage['messages'] = "[]";
+
+    _dispatcher.dispatch({
+      "message": ActionType.clearAllSamlMessages.toString(),
     });
   }
 }

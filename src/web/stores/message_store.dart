@@ -11,6 +11,13 @@ class MessageStore {
     // This store reacts to these types of actions only
     actions.on(ActionType.addSamlMessage, (action) => _addMessageFromAction(action));
     actions.on(ActionType.addAllSamlMessages, (action) => _addAllMessagesFromAction(action));
+    actions.on(ActionType.clearAllSamlMessages, (_) => _clearAllMessages());
+  }
+
+  _clearAllMessages() {
+    messages.clear();
+
+    _dispatcher.dispatch({});
   }
 
   SamlMessage _prettifyMessage(SamlMessage message) {
