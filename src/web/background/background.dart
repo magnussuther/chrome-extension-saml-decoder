@@ -30,13 +30,9 @@ onBeforeRequestHandler(JsObject data) {
   }
 }
 
-storeInLocalStorage(String decoded, String parameter, String binding) {
+storeInLocalStorage(SamlMessage message) {
   List<Map> storedMessages = JSON.decode(window.localStorage["messages"]);
-
-  Map newMessage = new SamlMessage(new DateTime.now().toUtc().toString(), parameter, '''$decoded''', binding).toJson();
-
-  storedMessages.add(newMessage);
-
+  storedMessages.add(message.toJson());
   window.localStorage["messages"] = JSON.encode(storedMessages);
 }
 
@@ -56,18 +52,28 @@ void processSamlPostBindingMessage(JsObject data) {
         return; // Nothing for us to see here
       }
 
-      var messages = formData[parameter];
-
-      String message = messages[0];
+      var message = formData[parameter][0];
       var decoded = window.atob(message);
-      storeInLocalStorage(decoded, parameter, "post");
+
+      var samlMessage = new SamlMessage()
+        ..time = new DateTime.now().toUtc().toString()
+        ..parameter = parameter
+        ..binding = "post"
+        ..content = decoded;
+
+      if (postParameterExists(formData, "RelayState")) {
+        var relayState = formData["RelayState"][0];
+        samlMessage.relayState = relayState;
+      }
+
+      storeInLocalStorage(samlMessage);
     }
   }
 }
 
 postParameterExists(formData, parameter) {
-  var messageList = formData[parameter];
-  return messageList != null && messageList.length > 0;
+  var values = formData[parameter];
+  return values != null && values.length > 0;
 }
 
 void processSamlRedirectBindingMessage(JsObject data) {
@@ -95,6 +101,24 @@ void processSamlRedirectBindingMessage(JsObject data) {
     var inflatedBytes = pakoInflate.callMethod("inflateRaw", [base64Decoded]);
     var inflated = UTF8.decode(inflatedBytes);
 
-    storeInLocalStorage(inflated, queryKey, "redirect");
+    var samlMessage = new SamlMessage()
+      ..time = new DateTime.now().toUtc().toString()
+      ..parameter = queryKey
+      ..binding = "redirect"
+      ..content = inflated;
+
+    if (uri.queryParameters.containsKey("RelayState")) {
+      samlMessage.relayState = uri.queryParameters["RelayState"];
+    }
+
+    if (uri.queryParameters.containsKey("SigAlg")) {
+      samlMessage.sigAlg = uri.queryParameters["SigAlg"];
+    }
+
+    if (uri.queryParameters.containsKey("Signature")) {
+      samlMessage.signature = uri.queryParameters["Signature"];
+    }
+
+    storeInLocalStorage(samlMessage);
   }
 }
