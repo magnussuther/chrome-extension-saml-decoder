@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
 
-  "name": "chrome-extension-saml-decoder",
-  "description": "chrome-extension-saml-decoder",
+  "name": "SAML Message Decoder",
+  "description": "A Chrome extension that collects and displays SAML messages",
   "version": "0.0.1",
 
   "browser_action": {
