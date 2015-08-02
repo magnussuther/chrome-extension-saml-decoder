@@ -4,6 +4,7 @@ import 'package:path/path.dart' as path;
 // Run me with 'dart run_tests.dart'
 void main() {
   runSuite('test/scenarios_test.dart');
+  runSuite('test/background_page_test.dart');
 }
 
 runSuite(file) {
