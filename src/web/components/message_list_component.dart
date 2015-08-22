@@ -12,10 +12,9 @@ class MessageListComponent extends Component {
   componentWillUnmount() => messageStore.getDispatcher().unlisten(changeState);
 
   _renderSingleMessage(SamlMessage message) {
-    // TODO: We use message.time as a key. So if two messages arrive at the same timestamp, only one
-    // message will get rendered.
+    var itemIndex = this.state["currentItem"]--;
     return (
-        messageComponent({"itemIndex": this.state["currentItem"]--, "message": message, "key": message.time })
+        messageComponent({"itemIndex": itemIndex, "message": message, "key": "message-component-${itemIndex}"})
     );
   }
 

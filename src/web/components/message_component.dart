@@ -11,39 +11,39 @@ class MessageComponent extends Component {
     highlightJs.callMethod("highlightBlock", [codeElement]);
   }
 
-  _renderRelayState(var relayState) {
+  _renderRelayState(relayState, itemIndex) {
     return (
-        div({}, [
-          dt({}, "RelayState"),
-          dd({}, relayState)
+        div({"key": "message-panel-body-additional-relaystate-${itemIndex}"}, [
+          dt({"key": "message-panel-body-additional-relaystate-dt-${itemIndex}"}, "RelayState"),
+          dd({"key": "message-panel-body-additional-relaystate-dd-${itemIndex}"}, relayState)
         ])
     );
   }
 
-  _renderSigAlg(var sigAlg) {
+  _renderSigAlg(sigAlg, itemIndex) {
     return (
-        div({}, [
-          dt({}, "SigAlg"),
-          dd({}, sigAlg)
+        div({"key": "message-panel-body-additional-sigalg-${itemIndex}"}, [
+          dt({"key": "message-panel-body-additional-sigalg-dt-${itemIndex}"}, "SigAlg"),
+          dd({"key": "message-panel-body-additional-sigalg-dd-${itemIndex}"}, sigAlg)
         ])
     );
   }
 
-  _renderSignature(var signature) {
+  _renderSignature(signature, itemIndex) {
     return (
-      div({}, [
-        dt({}, "Signature"),
-        dd({}, signature)
+      div({"key": "message-panel-body-additional-signature-${itemIndex}"}, [
+        dt({"key": "message-panel-body-additional-signature-dt-${itemIndex}"}, "Signature"),
+        dd({"key": "message-panel-body-additional-signature-dd-${itemIndex}"}, signature)
       ])
     );
   }
 
-  _renderAdditionalInformation(SamlMessage message, var itemIndex) {
+  _renderAdditionalInformation(SamlMessage message, itemIndex) {
     return (
-      dl({"className": "additional-information", "key": "panel-body-additional-${itemIndex}"}, [
-        message.relayState != null ? _renderRelayState(message.relayState) : null,
-        message.sigAlg != null ? _renderSigAlg(message.sigAlg) : null,
-        message.signature != null ? _renderSignature(message.signature) : null,
+      dl({"className": "additional-information", "key": "message-panel-body-parameters-container-${itemIndex}"}, [
+        message.relayState != null ? _renderRelayState(message.relayState, itemIndex) : null,
+        message.sigAlg != null ? _renderSigAlg(message.sigAlg, itemIndex) : null,
+        message.signature != null ? _renderSignature(message.signature, itemIndex) : null,
       ])
     );
   }
@@ -51,14 +51,14 @@ class MessageComponent extends Component {
   renderMessage(SamlMessage message, int itemIndex) {
     return (
       div({"className": "panel panel-default samlmessage"}, [
-        div({"className": "panel-heading", "key": "panel-heading-${itemIndex}"},
+        div({"className": "panel-heading", "key": "message-panel-heading-${itemIndex}"},
         "# ${itemIndex} - ${message.parameter} via ${message.binding} binding, at ${message.time} (UTC)"
         ),
-        div({"className": "panel-body", "key": "panel-body-${itemIndex}"}, [
-          pre({"key": "panel-body-content-${itemIndex}"},
+        div({"className": "panel-body", "key": "message-panel-body-${itemIndex}"}, [
+          pre({"key": "message-panel-body-content-${itemIndex}"},
             code({"className": "xml"}, "${message.content}")
           ),
-          h6({}, "Related parameters"),
+          h6({"key": "message-panel-body-parameters-heading-${itemIndex}"}, "Related parameters"),
           _renderAdditionalInformation(message, itemIndex)
         ])
       ])
