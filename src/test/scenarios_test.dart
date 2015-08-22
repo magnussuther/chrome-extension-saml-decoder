@@ -27,6 +27,46 @@ void main() {
     expect(hiNode.text, equals('Hi!'));
   });
 
+  test("When a single new message is added to the empty list of messages, this message gets syntax highlighted", () {
+    var appComponent = reactTestUtils.renderIntoDocument(app.appComponent({}));
+
+    var timestamp = new DateTime.now().toUtc().toString();
+
+    app.actions.addSamlMessage(new app.SamlMessage()
+      ..time = timestamp
+      ..parameter = 'SAMLRequest'
+      ..content = '<AuthnRequest><Issuer></Issuer></AuthnRequest>'
+      ..binding = 'redirect');
+
+    var messageObject = reactTestUtils.findRenderedDOMComponentWithClass(
+        appComponent, 'samlmessage');
+    var messageElement = reactTestUtils.getDomNode(messageObject);
+    var panelBodies = messageElement.getElementsByClassName('panel-body');
+
+    expect(panelBodies[0].innerHtml, contains("hljs-tag"));
+    expect(panelBodies[0].innerHtml, contains("hljs-title"));
+  });
+
+  test('''When a single new message is added to the empty list of messages, the 'CLEAR ALL' button
+  in the footer gets rendered''', () {
+    var appComponent = reactTestUtils.renderIntoDocument(app.appComponent({}));
+
+    var timestamp = new DateTime.now().toUtc().toString();
+
+    app.actions.addSamlMessage(new app.SamlMessage()
+      ..time = timestamp
+      ..parameter = 'SAMLRequest'
+      ..content = '<AuthnRequest><Issuer></Issuer></AuthnRequest>'
+      ..binding = 'redirect');
+
+    var linkObject = reactTestUtils.findRenderedDOMComponentWithClass(
+        appComponent, 'clear-all');
+    var linkElement = reactTestUtils.getDomNode(linkObject);
+
+    expect(linkObject, isNotNull);
+    expect(linkElement.text, equals('CLEAR ALL'));
+  });
+
   test("An action to add a single new message triggers a render of that message", () {
     var appComponent = reactTestUtils.renderIntoDocument(app.appComponent({}));
 
