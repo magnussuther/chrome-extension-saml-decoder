@@ -20,20 +20,18 @@ class FooterComponent extends Component {
   render() {
     return (
       div({"className": "footer-container"},
-        div({"className": "well"},
-          div({"className": "container-fluid"},
-            div({"className": "row"}, [
-              div({"className": "col-xs-5", "key": "footer-title-container"},
-                span({"className": "panel-title"}, "SAML Message Decoder")
-              ),
-              div({"className": "col-xs-7", "key": "footer-buttons-container"},
-                span({"className": "pull-right"},
-                  _renderClearAllButton()
-                )
-              ),
+        footer({"className": "mdl-mini-footer"},[
+          div({"className": "mdl-mini-footer__left-section", "key": "footer-container-section-left"},
+            div({"className": "mdl-logo"}, "SAML Message Decoder")
+          ),
+          div({"className": "mdl-mini-footer__right-section", "key": "footer-container-section-right"},
+            ul({"className": "mdl-mini-footer__link-list"}, [
+              li({"key": "footer-container-section-right-link1"},
+                _renderClearAllButton()
+              )
             ])
           )
-        )
+        ])
       )
     );
   }

@@ -21,7 +21,25 @@ class MessageStore {
   }
 
   SamlMessage _prettifyMessage(SamlMessage message) {
+    // Ensure correct formatting
     message.content = parse(message.content).toXmlString(pretty: true);
+
+    // Stack the attributes of each opening tag and indent
+    message.content = message.content.replaceAllMapped(new RegExp(r'(\s*<\w+)(.*\"\s?\/?>)'), (Match m) {
+      var openingTagName = m.group(1);
+      var openingTagAttributes = m.group(2).trim();
+
+      // Replace the space between attributes with a newline
+      var stackedAttributes = openingTagAttributes.replaceAllMapped(new RegExp(r'(.\")(\s)(\w)'),
+          (Match m) => "${m.group(1)}\n${m.group(3)}");
+
+      // Replace all newlines of the stackedAttributes with spaces for indentation
+      var spaces = ' '*(openingTagName.replaceFirst(new RegExp(r'\n'), '').length + 1);
+      var indentedAttributes = stackedAttributes.replaceAll(new RegExp(r'\n'), "\n${spaces}");
+
+      return "${openingTagName} ${indentedAttributes}";
+    });
+
     return message;
   }
 

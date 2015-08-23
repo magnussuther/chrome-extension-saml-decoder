@@ -7,6 +7,14 @@ html, body {
     font-family: 'Roboto', sans-serif;
 }
 
+html {
+    height: auto;
+}
+
+body {
+    background-color: #eeeeee;
+}
+
 .app-component-container {
     min-width: 50em;
 }
@@ -21,14 +29,28 @@ html, body {
     width: 100%;
 }
 
-.footer-container .well {
+footer.mdl-mini-footer {
+    background: rgba(3, 169, 244, 255);
+    padding: 15px 30px;
+}
+
+.mdl-logo {
     margin-bottom: 0;
-    background: #03a9f4;
-    color: rgba(255,255,255,.84);
+    font-weight: bold;
+}
+
+.samlmessage .mdl-panel {
+    background: rgba(3, 169, 244, 255);
 }
 
 .samlmessage code {
-    font-size: 0.7em;
+    font-size: 0.6em;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
+dd {
+    margin-left: 0;
 }
 
 .welcome-notice {
@@ -37,17 +59,21 @@ html, body {
     padding: 5em;
 }
 
+h1.welcome-notice-hi {
+    font-size: 2.5em;
+    margin-bottom: 0.2em;
+}
+
 .clear-all {
     cursor: pointer;
     font-size: .7em;
-    color: rgba(255,255,255,.84);
+    color: rgba(255,255,255,.84) !important;
     border-bottom: 1px solid rgba(255,255,255,.84);
 }
 
 .clear-all:hover {
-    color: rgba(255, 255, 255, 1);
-    border-bottom: 1px solid rgba(255, 255, 255, 1);
-    text-decoration: none;
+    color: rgba(255, 255, 255, 255) !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 155);
 }
 
 .additional-information {

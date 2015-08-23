@@ -41,7 +41,7 @@ void main() {
     var messageObject = reactTestUtils.findRenderedDOMComponentWithClass(
         appComponent, 'samlmessage');
     var messageElement = reactTestUtils.getDomNode(messageObject);
-    var panelBodies = messageElement.getElementsByClassName('panel-body');
+    var panelBodies = messageElement.getElementsByClassName('mdl-panel__content');
 
     expect(panelBodies[0].innerHtml, contains("hljs-tag"));
     expect(panelBodies[0].innerHtml, contains("hljs-title"));
@@ -81,9 +81,9 @@ void main() {
     var messageObject = reactTestUtils.findRenderedDOMComponentWithClass(
         appComponent, 'samlmessage');
     var messageElement = reactTestUtils.getDomNode(messageObject);
-    var panelHeadings = messageElement.getElementsByClassName('panel-heading');
+    var panelHeadings = messageElement.getElementsByClassName('mdl-panel__heading');
     var expectedHeading = "# 1 - SAMLRequest via redirect binding, at ${timestamp} (UTC)";
-    var panelBodies = messageElement.getElementsByClassName('panel-body');
+    var panelBodies = messageElement.getElementsByClassName('mdl-panel__content');
 
     expect(panelHeadings.length, equals(1));
     expect(panelHeadings[0].text, equals(expectedHeading));
@@ -159,15 +159,15 @@ void main() {
     var messageElements = messageObjects.map((e) => reactTestUtils.getDomNode(e));
 
     Element first = messageElements.elementAt(0);
-    var firstHeading = first.getElementsByClassName('panel-heading').elementAt(0);
+    var firstHeading = first.getElementsByClassName('mdl-panel__heading').elementAt(0);
     expect(firstHeading.text, equals(expectedHeading1));
 
     Element second = messageElements.elementAt(1);
-    var secondHeading = second.getElementsByClassName('panel-heading').elementAt(0);
+    var secondHeading = second.getElementsByClassName('mdl-panel__heading').elementAt(0);
     expect(secondHeading.text, equals(expectedHeading2));
 
     Element third = messageElements.elementAt(2);
-    var thirdHeading = third.getElementsByClassName('panel-heading').elementAt(0);
+    var thirdHeading = third.getElementsByClassName('mdl-panel__heading').elementAt(0);
     expect(thirdHeading.text, equals(expectedHeading3));
   });
 

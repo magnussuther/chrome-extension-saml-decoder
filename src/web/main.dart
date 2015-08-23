@@ -8,6 +8,7 @@ import 'package:dispatch/dispatch.dart';
 import 'package:react/react_client.dart' as reactClient;
 import 'package:react/react.dart';
 import 'package:xml/xml.dart';
+import 'package:mdl/mdl.dart' as mdl;
 
 part 'saml_message.dart';
 part 'actions.dart';
@@ -22,6 +23,10 @@ MessageStore messageStore;
 Actions actions;
 
 initialize() {
+  mdl.registerMdl();
+  mdl.componentFactory().run().then((_) {
+  });
+
   actions = new Actions();
   messageStore = new MessageStore();
 }
@@ -35,6 +40,8 @@ importFromLocalStorage() {
 }
 
 void main() {
+  print("Main initializing");
+
   initialize();
 
   reactClient.setClientConfiguration();
@@ -43,4 +50,6 @@ void main() {
 
   // Import all messages from LocalStorage, that the background page has produced since we last displayed the GUI.
   importFromLocalStorage();
+
+  print("Main exiting");
 }

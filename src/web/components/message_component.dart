@@ -50,18 +50,20 @@ class MessageComponent extends Component {
 
   renderMessage(SamlMessage message, int itemIndex) {
     return (
-      div({"className": "panel panel-default samlmessage"}, [
-        div({"className": "panel-heading", "key": "message-panel-heading-${itemIndex}"},
-        "# ${itemIndex} - ${message.parameter} via ${message.binding} binding, at ${message.time} (UTC)"
-        ),
-        div({"className": "panel-body", "key": "message-panel-body-${itemIndex}"}, [
-          pre({"key": "message-panel-body-content-${itemIndex}"},
-            code({"className": "xml"}, "${message.content}")
+      div({"className": "samlmessage"},
+        div({"className": "mdl-panel mdl-panel--with-heading mdl-panel--dark mdl-panel--light-text"}, [
+          div({"className": "mdl-panel__heading",
+            "key": "message-panel-heading-${itemIndex}"},
+          "# ${itemIndex} - ${message.parameter} via ${message.binding} binding, at ${message.time} (UTC)"
           ),
-          h6({"key": "message-panel-body-parameters-heading-${itemIndex}"}, "Related parameters"),
-          _renderAdditionalInformation(message, itemIndex)
+          div({"className": "mdl-panel__content", "key": "message-panel-body-${itemIndex}"}, [
+            pre({"key": "message-panel-body-content-${itemIndex}"},
+              code({"className": "xml"}, "${message.content}")
+            ),
+            _renderAdditionalInformation(message, itemIndex)
+          ])
         ])
-      ])
+      )
     );
   }
 
