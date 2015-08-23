@@ -12,6 +12,7 @@ void main() {
     new File(path.join(p, "icon_128.png")).copy(path.join(p, "build", "release", "icon_128.png"));
     new File(path.join(p, "icon_48.png")).copy(path.join(p, "build", "release", "icon_48.png"));
     new File(path.join(p, "icon_16.png")).copy(path.join(p, "build", "release", "icon_16.png"));
+    new File(path.join(p, "..", "LICENSE")).copy(path.join(p, "build", "release", "LICENSE"));
 
 
     Process.run('/usr/lib/dart/bin/pub', ['build', '--mode', 'debug', '--output', 'build/debug'], workingDirectory: "${p}").then((ProcessResult results) {
@@ -22,6 +23,7 @@ void main() {
       new File(path.join(p, "icon_128.png")).copy(path.join(p, "build", "debug", "icon_128.png"));
       new File(path.join(p, "icon_48.png")).copy(path.join(p, "build", "debug", "icon_48.png"));
       new File(path.join(p, "icon_16.png")).copy(path.join(p, "build", "debug", "icon_16.png"));
+      new File(path.join(p, "..", "LICENSE")).copy(path.join(p, "build", "debug", "LICENSE"));
     });
 
   });
