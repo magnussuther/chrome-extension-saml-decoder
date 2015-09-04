@@ -1,8 +1,8 @@
-version: 0.0.1
 name: 'magnussuther.chrome_extension_saml_decoder'
+version: 1.0.0
 description: 'A Chrome extension to decode and view SAML messages.'
-#author: Your Name <email@example.com>
-#homepage: https://www.example.com
+author: 'Magnus Suther <magnus.suther@gmail.com>'
+homepage: 'https://github.com/magnussuther/chrome-extension-saml-decoder'
 
 environment:
   sdk: '>=1.0.0 <2.0.0'

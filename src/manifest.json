@@ -3,7 +3,7 @@
 
   "name": "SAML Message Decoder",
   "description": "A Chrome extension that collects and displays SAML messages",
-  "version": "0.0.1",
+  "version": "1.0.0",
 
   "browser_action": {
     "default_popup": "web/index.html"
