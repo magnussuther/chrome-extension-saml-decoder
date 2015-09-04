@@ -1,6 +1,6 @@
-# chrome-extension-saml-decoder
+# SAML Message Decoder (Chrome extension)
 
-**This extension is not production-ready. It is experimental only.**
+This extension is still in its early days. Bugs are guaranteed. 
 
 ## Development
 
@@ -8,20 +8,9 @@
 ```
 vagrant up
 ```
-2) Start WebStorm and walk through its initial setup steps (you might as well select the Evaulation license, since this is a temporary machine)
-```
-./WebStorm-141.1550/bin/webstorm.sh
-```
-3) Open the project at:
-```
-/vagrant/src
-```
-4) Open Dart settings. Enter the following:
-```
-Dart SDK path: /usr/lib/dart
-```
-```
-Dartium path: /home/vagrant/dartium-lucid64-full-stable-1.11.1.0/chrome
-```
-5) The project should already be loaded. Now open the pubspec.yaml in the editor and hit "Get Dependencies". 
-  
+Wait until the GDM login screen appears.
+
+2) Login to the machine. Application menu items are installed for launching WebStorm (preconfigured and ready) and Dartium. 
+
+3) In WebStorm, open up the pubspec.yaml and hit the 'Get Dependencies' text link at the top.
+
