@@ -13,7 +13,7 @@ runSuite(file) {
   var scriptDir = path.dirname(Platform.script.toFilePath());
   var p = path.join(scriptDir, "../");
 
-  Process.run('/usr/lib/dart/bin/pub', ['run', 'test', '-p', 'dartium', file],
+  Process.run('pub', ['run', 'test', '-p', 'dartium', file],
       workingDirectory: p)
     .then((ProcessResult results) {
       print(results.stdout);

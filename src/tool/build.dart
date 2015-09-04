@@ -4,7 +4,7 @@ import 'package:path/path.dart' as path;
 void main() {
   var scriptDir = path.dirname(Platform.script.toFilePath());
   var p = path.join(scriptDir, "../");
-  Process.run('/usr/lib/dart/bin/pub', ['build', '--mode', 'release', '--output', 'build/release'], workingDirectory: "${p}").then((ProcessResult results) {
+  Process.run('pub', ['build', '--mode', 'release', '--output', 'build/release'], workingDirectory: "${p}").then((ProcessResult results) {
     print(results.stdout);
     print(results.stderr);
 
@@ -15,7 +15,7 @@ void main() {
     new File(path.join(p, "..", "LICENSE")).copy(path.join(p, "build", "release", "LICENSE"));
 
 
-    Process.run('/usr/lib/dart/bin/pub', ['build', '--mode', 'debug', '--output', 'build/debug'], workingDirectory: "${p}").then((ProcessResult results) {
+    Process.run('pub', ['build', '--mode', 'debug', '--output', 'build/debug'], workingDirectory: "${p}").then((ProcessResult results) {
       print(results.stdout);
       print(results.stderr);
 
