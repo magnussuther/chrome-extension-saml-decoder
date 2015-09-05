@@ -16,6 +16,9 @@ Vagrant.configure(2) do |config|
 	config.vm.provider "virtualbox" do |vb|
 		vb.gui = true
 		vb.memory = 3048
+		vb.cpus = 2
+		vb.customize ["modifyvm", :id, "--accelerate3d", "on"]
+		vb.customize ["modifyvm", :id, "--vram", "128"]
 	end
 
 	config.vm.hostname = "saml-decoder.vagrantbox.local"
