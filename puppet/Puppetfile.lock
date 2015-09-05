@@ -1,0 +1,8 @@
+FORGE
+  remote: https://forgeapi.puppetlabs.com
+  specs:
+    camptocamp-archive (0.8.1)
+
+DEPENDENCIES
+  camptocamp-archive (>= 0)
+
