@@ -27,7 +27,7 @@ Vagrant.configure(2) do |config|
 	
 	install_puppet config
 
-	config.vm.provision "shell", inline: "apt-get install ruby1.9.1-dev -y"
+	config.vm.provision "shell", inline: "apt-get install git ruby1.9.1-dev -y"
 	config.vm.provision "shell", inline: "gem install librarian-puppet"
 	config.vm.provision "shell", inline: "cd /vagrant/puppet && librarian-puppet install --verbose"
 	
