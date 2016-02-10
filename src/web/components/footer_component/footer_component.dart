@@ -1,23 +1,22 @@
 part of magnussuther.chrome_extension_saml_decoder;
 
-class FooterComponent extends Component {
+class FooterComponent extends FluxComponent<MessageActions, MessageStore>  {
 
-  _changeState(_e) => setState({});
-
-  componentWillMount() => messageStore.getDispatcher().listen(_changeState);
-  componentWillUnmount() => messageStore.getDispatcher().unlisten(_changeState);
-
-  _onClearAll() => actions.clearAllSamlMessages();
+  shouldComponentUpdate(nextProps, nextState) {
+    return true;
+  }
 
   _renderClearAllButton() {
-    if(messageStore.messages.isNotEmpty) {
+    if(this.props["hasMessages"]) {
       return (
-          a({"className": "clear-all", "onClick": (e) => _onClearAll()}, "CLEAR ALL")
+          a({"className": "clear-all", "onClick": (e) => messageActions.clearAllSamlMessages()}, "CLEAR ALL")
       );
     }
   }
 
   render() {
+    print("FooterComponent renders");
+
     return (
       div({"className": "footer-container"},
         footer({"className": "mdl-mini-footer"},[

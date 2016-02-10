@@ -1,8 +1,12 @@
 part of magnussuther.chrome_extension_saml_decoder;
 
-class MessageComponent extends Component {
+class MessageComponent extends FluxComponent<MessageActions, MessageStore>  {
   componentDidMount(root) => highlight();
   componentDidUpdate(prevProps, prevState, element) => highlight();
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return true;
+  }
 
   highlight() {
     var element = getDOMNode();
@@ -38,29 +42,29 @@ class MessageComponent extends Component {
     );
   }
 
-  _renderAdditionalInformation(SamlMessage message, itemIndex) {
+  _renderAdditionalInformation(SamlMessage message) {
     return (
-      dl({"className": "additional-information", "key": "message-panel-body-parameters-container-${itemIndex}"}, [
-        message.relayState != null ? _renderRelayState(message.relayState, itemIndex) : null,
-        message.sigAlg != null ? _renderSigAlg(message.sigAlg, itemIndex) : null,
-        message.signature != null ? _renderSignature(message.signature, itemIndex) : null,
+      dl({"className": "additional-information", "key": "message-panel-body-parameters-container-${message.time}"}, [
+        message.relayState != null ? _renderRelayState(message.relayState, message.time) : null,
+        message.sigAlg != null ? _renderSigAlg(message.sigAlg, message.time) : null,
+        message.signature != null ? _renderSignature(message.signature, message.time) : null,
       ])
     );
   }
 
-  renderMessage(SamlMessage message, int itemIndex) {
+  renderMessage(SamlMessage message, int displayNumber) {
     return (
       div({"className": "samlmessage"},
         div({"className": "mdl-panel mdl-panel--with-heading mdl-panel--dark mdl-panel--light-text"}, [
           div({"className": "mdl-panel__heading",
-            "key": "message-panel-heading-${itemIndex}"},
-          "# ${itemIndex} - ${message.parameter} via ${message.binding} binding, at ${message.time} (UTC)"
+            "key": "message-panel-heading-${message.time}"},
+          "# ${displayNumber} - ${message.parameter} via ${message.binding} binding, at ${message.time} (UTC)"
           ),
-          div({"className": "mdl-panel__content", "key": "message-panel-body-${itemIndex}"}, [
-            pre({"key": "message-panel-body-content-${itemIndex}"},
+          div({"className": "mdl-panel__content", "key": "message-panel-body-${message.time}"}, [
+            pre({"key": "message-panel-body-content-${message.time}"},
               code({"className": "xml"}, "${message.content}")
             ),
-            _renderAdditionalInformation(message, itemIndex)
+            _renderAdditionalInformation(message)
           ])
         ])
       )
@@ -68,8 +72,10 @@ class MessageComponent extends Component {
   }
 
   render() {
+    print("MessageComponent renders");
+
     return (
-      renderMessage(this.props["message"], this.props["itemIndex"])
+      renderMessage(this.props["message"], this.props["displayNumber"])
     );
   }
 }

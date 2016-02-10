@@ -9,8 +9,8 @@ environment:
 
 dependencies:
   browser: '>=0.10.0 <0.11.0'
-  dispatch: "^0.1.2"
-  react: "^0.7.1"
+  w_flux: "^2.0.0"
+  react: "^0.8.7"
   xml: "^2.3.2"
   chrome: "^0.7.0-dev1"
   bootstrap: "^3.3.4"

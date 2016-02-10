@@ -1,4 +1,5 @@
 import 'dart:html';
+import 'dart:async';
 
 import 'package:test/test.dart';
 import 'package:react/react_client.dart' as reactClient;
@@ -7,17 +8,26 @@ import 'package:react/react_test_utils.dart' as reactTestUtils;
 import '../web/main.dart' as app;
 
 
+Future sleep() {
+  return new Future.delayed(const Duration(seconds: 1));
+}
+
 void main() {
   reactClient.setClientConfiguration();
+
 
   setUp(() {
     window.localStorage['messages'] = "[]";
     app.initialize();
-    app.importFromLocalStorage();
+
+    app.messageActions = new app.MessageActions();
+    app.messageStore = new app.MessageStore(app.messageActions);
+
+    app.importFromLocalStorage(app.messageActions);
   });
 
   test("When localStorage hasn't been initialized, a welcome notice is displayed instead of a list", () {
-    var appComponent = reactTestUtils.renderIntoDocument(app.appComponent({}));
+    var appComponent = reactTestUtils.renderIntoDocument(app.appComponent({"store": app.messageStore}));
 
     var hiElement = reactTestUtils.findRenderedDOMComponentWithClass(
         appComponent, 'welcome-notice-hi');
@@ -27,16 +37,21 @@ void main() {
     expect(hiNode.text, equals('Hi!'));
   });
 
-  test("When a single new message is added to the empty list of messages, this message gets syntax highlighted", () {
-    var appComponent = reactTestUtils.renderIntoDocument(app.appComponent({}));
+  test("When a single new message is added to the empty list of messages, this message gets syntax highlighted", () async {
+    var appComponent = reactTestUtils.renderIntoDocument(app.appComponent({"store": app.messageStore}));
 
     var timestamp = new DateTime.now().toUtc().toString();
 
-    app.actions.addSamlMessage(new app.SamlMessage()
-      ..time = timestamp
-      ..parameter = 'SAMLRequest'
-      ..content = '<AuthnRequest><Issuer></Issuer></AuthnRequest>'
-      ..binding = 'redirect');
+    await app.messageActions.addSamlMessage.call(
+        new app.SamlMessage()
+        ..time = timestamp
+        ..parameter = 'SAMLRequest'
+        ..content = '<AuthnRequest><Issuer></Issuer></AuthnRequest>'
+        ..binding = 'redirect'
+    );
+
+    // Wait and pray that the Components have redrawn
+    await sleep();
 
     var messageObject = reactTestUtils.findRenderedDOMComponentWithClass(
         appComponent, 'samlmessage');
@@ -48,16 +63,19 @@ void main() {
   });
 
   test('''When a single new message is added to the empty list of messages, the 'CLEAR ALL' button
-  in the footer gets rendered''', () {
-    var appComponent = reactTestUtils.renderIntoDocument(app.appComponent({}));
+  in the footer gets rendered''', () async {
+    var appComponent = reactTestUtils.renderIntoDocument(app.appComponent({"store": app.messageStore}));
 
     var timestamp = new DateTime.now().toUtc().toString();
 
-    app.actions.addSamlMessage(new app.SamlMessage()
+    await app.messageActions.addSamlMessage(new app.SamlMessage()
       ..time = timestamp
       ..parameter = 'SAMLRequest'
       ..content = '<AuthnRequest><Issuer></Issuer></AuthnRequest>'
       ..binding = 'redirect');
+
+    // Wait and pray that the Components have redrawn
+    await sleep();
 
     var linkObject = reactTestUtils.findRenderedDOMComponentWithClass(
         appComponent, 'clear-all');
@@ -67,16 +85,19 @@ void main() {
     expect(linkElement.text, equals('CLEAR ALL'));
   });
 
-  test("An action to add a single new message triggers a render of that message", () {
-    var appComponent = reactTestUtils.renderIntoDocument(app.appComponent({}));
+  test("An action to add a single new message triggers a render of that message", () async {
+    var appComponent = reactTestUtils.renderIntoDocument(app.appComponent({"store": app.messageStore}));
 
     var timestamp = new DateTime.now().toUtc().toString();
 
-    app.actions.addSamlMessage(new app.SamlMessage()
+    await app.messageActions.addSamlMessage(new app.SamlMessage()
       ..time = timestamp
       ..parameter = 'SAMLRequest'
       ..content = '<AuthnRequest><Issuer></Issuer></AuthnRequest>'
       ..binding = 'redirect');
+
+    // Wait and pray that the Components have redrawn
+    await sleep();
 
     var messageObject = reactTestUtils.findRenderedDOMComponentWithClass(
         appComponent, 'samlmessage');
@@ -91,8 +112,8 @@ void main() {
     expect(panelBodies[0].text, contains('<AuthnRequest>'));
   });
 
-  test("An action to add a bunch of new messages triggers a render of those messages", () {
-    var appComponent = reactTestUtils.renderIntoDocument(app.appComponent({}));
+  test("An action to add a bunch of new messages triggers a render of those messages", () async {
+    var appComponent = reactTestUtils.renderIntoDocument(app.appComponent({"store": app.messageStore}));
 
     var timestamp1 = "2015-07-26 17:26:14.789Z";
     var samlMessage1 = new app.SamlMessage()
@@ -115,7 +136,10 @@ void main() {
       ..content = '<AuthnRequest><Issuer></Issuer></AuthnRequest>'
       ..binding = 'redirect';
 
-    app.actions.addAllSamlMessages([samlMessage1, samlMessage2, samlMessage3]);
+    await app.messageActions.addAllSamlMessages([samlMessage1, samlMessage2, samlMessage3]);
+
+    // Wait and pray that the Components have redrawn
+    await sleep();
 
     var messageObjects = reactTestUtils.scryRenderedDOMComponentsWithClass(
         appComponent, 'samlmessage');
@@ -124,8 +148,8 @@ void main() {
   });
 
   test('''When multiple messages are listed, they are sorted ascending based on the timestamps, and each message
-      get an incrementing ID''', () {
-    var appComponent = reactTestUtils.renderIntoDocument(app.appComponent({}));
+      get an incrementing ID''', () async {
+    var appComponent = reactTestUtils.renderIntoDocument(app.appComponent({"store": app.messageStore}));
 
     var timestamp1 = "2015-07-26 17:26:16.789Z";
     var samlMessage1 = new app.SamlMessage()
@@ -151,7 +175,10 @@ void main() {
       ..binding = 'redirect';
     var expectedHeading3 = "# 1 - SAMLRequest via redirect binding, at ${timestamp3} (UTC)";
 
-    app.actions.addAllSamlMessages([samlMessage1, samlMessage2, samlMessage3]);
+    await app.messageActions.addAllSamlMessages([samlMessage1, samlMessage2, samlMessage3]);
+
+    // Wait and pray that the Components have redrawn
+    await sleep();
 
     var messageObjects = reactTestUtils.scryRenderedDOMComponentsWithClass(
         appComponent, 'samlmessage');
@@ -171,42 +198,49 @@ void main() {
     expect(thirdHeading.text, equals(expectedHeading3));
   });
 
-  test("A message renders with only those 'additional parameters' that it contains", () {
-    var appComponent = reactTestUtils.renderIntoDocument(app.appComponent({}));
+  test("A message renders with only those 'additional parameters' that it contains", () async {
+    var appComponent = reactTestUtils.renderIntoDocument(app.appComponent({"store": app.messageStore}));
+
+    List<Future> futures = new List<Future>();
 
     // Should only render the relayState
-    app.actions.addSamlMessage(new app.SamlMessage()
+    futures.add(app.messageActions.addSamlMessage(new app.SamlMessage()
       ..time = new DateTime.now().toUtc().toString()
       ..parameter = 'SAMLRequest'
       ..content = '<AuthnRequest></AuthnRequest>'
       ..binding = 'redirect'
-      ..relayState = "f8f2cf32-0535-40e7-b37b-fd85d1ea3480");
+      ..relayState = "f8f2cf32-0535-40e7-b37b-fd85d1ea3480"));
 
     // Should only render the SigAlg
-    app.actions.addSamlMessage(new app.SamlMessage()
+    futures.add(app.messageActions.addSamlMessage(new app.SamlMessage()
       ..time = new DateTime.now().toUtc().toString()
       ..parameter = 'SAMLRequest'
       ..content = '<AuthnRequest></AuthnRequest>'
       ..binding = 'redirect'
-      ..sigAlg = "http://www.w3.org/2000/09/xmldsig#rsa-sha1");
+      ..sigAlg = "http://www.w3.org/2000/09/xmldsig#rsa-sha1"));
 
     // Should only render the Signature
-    app.actions.addSamlMessage(new app.SamlMessage()
+    futures.add(app.messageActions.addSamlMessage(new app.SamlMessage()
       ..time = new DateTime.now().toUtc().toString()
       ..parameter = 'SAMLRequest'
       ..content = '<AuthnRequest></AuthnRequest>'
       ..binding = 'redirect'
-      ..signature = "oJSPcZNvelg09kFZvQ2hoykJCNl...");
+      ..signature = "oJSPcZNvelg09kFZvQ2hoykJCNl..."));
 
     // Should render all parameters
-    app.actions.addSamlMessage(new app.SamlMessage()
+    futures.add(app.messageActions.addSamlMessage(new app.SamlMessage()
       ..time = new DateTime.now().toUtc().toString()
       ..parameter = 'SAMLRequest'
       ..content = '<AuthnRequest></AuthnRequest>'
       ..binding = 'redirect'
       ..signature = "oJSPcZNvelg09kFZvQ2hoykJCNl..."
       ..relayState = "f8f2cf32-0535-40e7-b37b-fd85d1ea3480"
-      ..sigAlg = "http://www.w3.org/2000/09/xmldsig#rsa-sha1");
+      ..sigAlg = "http://www.w3.org/2000/09/xmldsig#rsa-sha1"));
+
+    await Future.wait(futures);
+
+    // Wait and pray that the Components have redrawn
+    await sleep();
 
     var messageObjects = reactTestUtils.scryRenderedDOMComponentsWithClass(appComponent, 'samlmessage');
     var messageElements = messageObjects.map((e) => reactTestUtils.getDomNode(e));

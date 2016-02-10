@@ -1,26 +1,60 @@
 part of magnussuther.chrome_extension_saml_decoder;
 
-class MessageStore {
-  var _dispatcher;
-  List<SamlMessage> messages;
+class MessageStore extends Store {
 
-  MessageStore() {
-    messages = new List<SamlMessage>();
-    _dispatcher = Dispatch.create();
+  List<SamlMessage> _messages;
+  List<SamlMessage> get messages => _messages;
+  bool get hasMessages => _messages.isNotEmpty;
+  int get numberOfMessages => _messages.length;
+  SamlMessage messageAtIndex(i) => _messages.elementAt(i);
 
-    // This store reacts to these types of actions only
-    actions.on(ActionType.addSamlMessage, (action) => _addMessageFromAction(action));
-    actions.on(ActionType.addAllSamlMessages, (action) => _addAllMessagesFromAction(action));
-    actions.on(ActionType.clearAllSamlMessages, (_) => _clearAllMessages());
+  MessageActions _actions;
+
+  MessageStore(MessageActions this._actions) {
+    _messages = new List<SamlMessage>();
+
+    // This store listens to these actions
+    _actions.addSamlMessage.listen(_addMessageFromAction);
+    _actions.addAllSamlMessages.listen(_addAllMessagesFromAction);
+    _actions.clearAllSamlMessages.listen(_clearAllMessages);
   }
 
-  _clearAllMessages() {
-    messages.clear();
+  _clearAllMessages(_) {
+    print("_clearAllMessages() entered");
+    window.localStorage['messages'] = "[]";
+    _messages.clear();
 
-    _dispatcher.dispatch({});
+    trigger();
+  }
+
+  _addAllMessagesFromAction(payload) {
+    print("_addAllMessagesFromAction() entered");
+    var list = payload.map((m) => _prettifyMessage(m));
+
+    _messages.addAll(list);
+
+    // Sort the messages by time of arrival, ascending
+    _messages.sort((a, b) => -a.compareByTimestamp(b));
+
+    print("_addAllMessagesFromAction(): ${_messages.length} added");
+
+    trigger();
+  }
+
+  _addMessageFromAction(payload) {
+    print("_addMessageFromAction() entered");
+    // Fix the indentation of the message before adding it
+    var message = _prettifyMessage(payload);
+    _messages.add(message);
+
+    // Sort the messages by time of arrival, ascending
+    _messages.sort((a, b) => -a.compareByTimestamp(b));
+
+    trigger();
   }
 
   SamlMessage _prettifyMessage(SamlMessage message) {
+    print("_prettifyMessage() entered");
     // Ensure correct formatting
     message.content = parse(message.content).toXmlString(pretty: true);
 
@@ -41,33 +75,5 @@ class MessageStore {
     });
 
     return message;
-  }
-
-  _addAllMessagesFromAction(action) {
-    var list = action["data"].map((m) => _prettifyMessage(m));
-
-    messages.addAll(list);
-
-    // Sort the messages by time of arrival, ascending
-    messages.sort((a, b) => -a.compareByTimestamp(b));
-
-    // Notify all listening Components that this store has changed
-    _dispatcher.dispatch({});
-  }
-
-  _addMessageFromAction(action) {
-    // Fix the indentation of the message before adding it
-    var message = _prettifyMessage(action["data"]);
-    messages.add(message);
-
-    // Sort the messages by time of arrival, ascending
-    messages.sort((a, b) => -a.compareByTimestamp(b));
-
-    // Notify all listening Components that this store has changed
-    _dispatcher.dispatch({});
-  }
-
-  Dispatch getDispatcher() {
-    return _dispatcher;
   }
 }
