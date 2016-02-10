@@ -59,7 +59,7 @@ class devtools () {
 	archive { 'dartium-linux-x64-release':
 		ensure => present,
 		extension => zip,
-		url => 'https://storage.googleapis.com/dart-archive/channels/stable/release/1.12.0/dartium/dartium-linux-x64-release.zip',
+		url => 'https://storage.googleapis.com/dart-archive/channels/stable/release/1.14.1/dartium/dartium-linux-x64-release.zip',
 		timeout => 0,
 		checksum => false,
 		follow_redirects => true,
@@ -70,7 +70,7 @@ class devtools () {
 	
 	file { '/usr/local/bin/dartium':
 		ensure => link,
-		target => '/home/vagrant/dartium-lucid64-full-stable-1.12.0.0/chrome',
+		target => '/home/vagrant/dartium-lucid64-full-stable-1.14.1.0/chrome',
 	}
 	
 	file { '/lib/x86_64-linux-gnu/libudev.so.0': # Required by dartium
@@ -84,7 +84,7 @@ class devtools () {
 		Exec=dartium
 		Name=Dartium browser
 		Comment=Dartium browser
-		Icon=/home/vagrant/dartium-lucid64-full-stable-1.12.0.0/product_logo_48.png
+		Icon=/home/vagrant/dartium-lucid64-full-stable-1.14.1.0/product_logo_48.png
 		"
 	
 	file { '/usr/share/applications/dartium.desktop':
@@ -123,6 +123,7 @@ class devtools () {
 		content => $webstorm_desktop,
 	}
 	
+	# TODO: Only do this once! Otherwise the license key or whatever gets overwritten!
 	archive::extract { 'WebStorm10-config':
 		ensure => present,
 		timeout => 0,
